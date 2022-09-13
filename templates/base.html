@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <!--NavBar Section-->
+        <div class="navbar">
+            <nav class="navigation hide" id="navigation">
+                <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{% url 'latest_posts' %}">Forums</a></li>
+                    <li class="nav-item"><a href="{% url 'create_post' %}">Create Posts</a></li>
+                    <li class="nav-item"><a href="/">Categories</a></li>
+                </ul>
+            </nav>
+            <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+            <div class="justify-content-md-center">
+                <a class="brand" href="{% url 'latest_posts' %}">My Forum</a>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse justify-content-md-right" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'register' %}">register/login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        </div>
+    {% comment %} {% block content %} {% endcomment %}
+{% comment %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<table>
+<tr>
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+
+<input type="submit" value="login">
+<input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{# Assumes you set up the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p> {% endcomment %}
+
+{% comment %} {% endblock %} {% endcomment %}
+
+
+        <!--SearchBox Section-->
+        {% comment %} <form action="{% url 'search_result' %}" role="form" method="GET">
+            <div class="search-box">
+                <div>
+                    <select name="search-box" id="">
+                        <option value="Everything">Everything</option>
+                        <option value="Titles">Titles</option>
+                        <option value="Descriptions">Descriptions</option>
+                    </select>
+                    <input type="text" name="q" placeholder="search ...">
+                    <button type="submit" name="search"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form> {% endcomment %}
+        <div class="search-box">
+            <select name="" id="">
+                <option value="Everything">Everything</option>
+                <option value="Titles">Titles</option>
+                <option value="Descriptions">Descriptions</option>
+            </select>
+            <form name="search-form" method="get" action="{% url 'search_result' %}" >
+                {% csrf_token %}
+                <input type="search" name="q" placeholder="search ..." required>
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </header>
+    {% block content %}
+    {% endblock content %}
+    <footer>
+        <span>&copy;  RICHARD'S FORUM | All Rights Reserved</span>
+    </footer>
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>
