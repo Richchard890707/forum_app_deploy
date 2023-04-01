@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@zogp@!-4+t--s4&9b*lz&k@ivr*upwvu&jumrc6mb$j%ew3or'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
      'hitcount',
      'taggit',
      'crispy_forms',
+     "gunicorn",
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,7 @@ WSGI_APPLICATION = 'PROJECTNAME.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -96,6 +98,16 @@ DATABASES = {
         'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ.get('DATABASE_NAME'),
+#         'USER': os.environ.get('DATABASE_USER'),
+#         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+#         'HOST': os.environ.get('DATABASE_HOST'),
+#         'PORT': os.environ.get('DATABASE_PORT')
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -140,19 +152,13 @@ STATICFILES_FINDERS = [
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
-# TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js'
-# TINYMCE_COMPRESSOR = False
-TINYMCE_JS_URL = os.path.join(STATIC_URL, 'tinymce/js/tinymce/tinymce.min.js')
-
-
-
+# STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
 
 
 # STATICFILES_DIRS = [BASE_DIR / 'static']
-# MEDIA_ROOT  = BASE_DIR / 'media'
-# MEDIA_URL = '/media/'
+MEDIA_ROOT  = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -160,6 +166,7 @@ TINYMCE_JS_URL = os.path.join(STATIC_URL, 'tinymce/js/tinymce/tinymce.min.js')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
+    '*'
 # "http://localhost:8080",
 # "http://127.0.0.1:9000",
 ]

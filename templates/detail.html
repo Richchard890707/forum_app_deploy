@@ -12,7 +12,7 @@
             <!--Original thread-->
             <div class="head">
                 <div class="authors">Author</div>
-                <div class="content">Topic: {{ post.title }} (Read {% get_hit_count for post %} Times)</div>
+                <div class="content" >Topic: {{ post.title }} (Read {% get_hit_count for post %} Times)</div>
             </div>
 
             <div class="body">
@@ -23,9 +23,13 @@
                     <div>Posts: <u>{{post.user.num_posts}}</u></div>
                     <div>Points: <u>{{post.user.points}}</u></div>
                 </div>
-                <div class="content">
-                    {{post.content|safe}}
-                    <br>
+                <div class="content" style="font-size: 1.3em;">
+                    {{post.content|linebreaksbr}}
+                    <div class="picture-1">
+                        {% if post.post_images %}
+                            <img src="{{post.post_images.url}}" alt="content picture" style="max-width:500px">
+                        {% endif %}    
+                    </div>
                     <div class="comment">
                         <button onclick="showComment()">Comment</button>
                     </div>

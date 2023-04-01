@@ -53,7 +53,6 @@ def home(request):
 #     return render(request, 'detail.html',context)
 def detail(request, slug): #以SLUG 當條件查詢
     post = get_object_or_404(Post,slug=slug)
-    # print('aaaa,',request.POST)
     # if request.user.is_authenticated:
     author = Author.objects.get(user=request.user) #回傳請求者
     # if "comment-form" in request.POST: #如果comment-form發生上傳了
@@ -132,10 +131,13 @@ def posts(request,slug):
 @login_required
 def create_post(request):
     context = {}
-    form = PostForm(request.POST or None)
+    # form = PostForm(request.POST or None)
+    form = PostForm(request.POST, request.FILES or None)
     if request.method == "POST":
         if form.is_valid():
             print("\n\n its valid")
+            omg = request.FILES.get('post_images')
+            print('omg:',omg)
             author = Author.objects.get(user=request.user)
             new_post = form.save(commit=False)
             new_post.user = author
@@ -157,7 +159,8 @@ def search_result(request):
     # if request.method == "GET":
     post_name = request.GET.get("q")
     print("post_name:",post_name)
-    posts = Post.objects.filter(Q(title__icontains=post_name))
+    # posts = Post.objects.filter(Q(title__icontains=post_name))
+    posts = Post.objects.filter(Q(content__icontains=post_name)|Q(title__icontains=post_name))
 
         # objects.all().filter(title='python')
     print("status:",posts.count())

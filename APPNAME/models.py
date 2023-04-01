@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from django_resized import ResizedImageField
 from tinymce.models import HTMLField
+from tinymce import models as tinymce_models
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
 from taggit.managers import TaggableManager
@@ -16,7 +17,7 @@ class Author(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=40, blank=True)
     slug = slug = models.SlugField(max_length=400, unique=True, blank=True)
-    bio = HTMLField()
+    bio = tinymce_models.HTMLField()
     points = models.IntegerField(default=0)
     profile_pic = ResizedImageField(size=[50, 80], quality=100, upload_to="authors", default=None, null=True, blank=True)
 
@@ -89,8 +90,10 @@ class Post(models.Model):
     title = models.CharField(max_length=400)
     slug = models.SlugField(max_length=400, unique=True, blank=True, default=uuid.uuid4)
     user = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = HTMLField()
+    content = tinymce_models.HTMLField()
     categories = models.ManyToManyField(Category)
+    post_images = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    # upload_date = models.DateField(default=timezone.now)
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',

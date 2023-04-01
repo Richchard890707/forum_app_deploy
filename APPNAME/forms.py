@@ -5,7 +5,10 @@ from django.contrib.auth.forms import UserCreationForm
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title","content","categories","tags"]
+        fields = ["title","content","categories","post_images","tags"]
+        widgets = {
+            'post_images': forms.FileInput(attrs={'class': 'form-control-file'})
+        }
 
 class CreateUserForm(UserCreationForm):
     class Meta:

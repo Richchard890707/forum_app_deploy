@@ -73,6 +73,12 @@ h1 {
     display: none;
 }
 
+#picture img {
+    width: 10px;
+    height: 10px;
+    color: #FF0042;
+    border-radius: 8px;
+  }
 
 /* For the smartphones */
 @media screen and (max-width: 460px) {
@@ -475,4 +481,7 @@ footer {
 
 .comment-area input:hover {
     border: solid 1px #000000;
+}
+.picture-1 img {
+    max-width:560px;
 }
